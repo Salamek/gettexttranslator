@@ -17,6 +17,7 @@ Authors in alphabetic order
 - Roman Sklenář (http://romansklenar.cz)
 - Miroslav Smetana
 - Jan Smitka
+- Adam Schubert
 - Patrik Votoček (patrik@votocek.cz)
 - Tomáš Votruba (tomas.vot@gmail.com)
 - Václav Vrbka (gmvasek@php-info.cz)
