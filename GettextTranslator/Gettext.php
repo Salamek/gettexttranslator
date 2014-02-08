@@ -297,7 +297,7 @@ class Gettext extends Nette\Object implements Nette\Localization\ITranslator
 
 			$message = $this->dictionary[$message]['translation'];
 			if (!empty($message)) {
-				$message = (is_array($message) && $plural !== NULL && isset($message[$plural])) ? $message[$plural] : $message;
+				$message = (is_array($message) && $message_plural !== NULL && isset($message[$message_plural])) ? $message[$message_plural] : $message;
 			}
 
 		} else {
