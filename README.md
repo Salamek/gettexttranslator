@@ -14,7 +14,7 @@ Gettext Translator is tool that enables simple and user friendly translation of 
 
 ### Usage
 
-1. Set up config.neon:
+#### Set up config.neon:
 
     common:
       gettextTranslator:
@@ -27,13 +27,13 @@ Gettext Translator is tool that enables simple and user friendly translation of 
         height: 450
 
 
-2. Set up in bootstrap.php
+#### Set up in bootstrap.php
 
     $configurator->onCompile[] = function ($configurator, $compiler) {
-      $compiler->addExtension('gettextTranslator', new GettextTranslator\DI\Extension);
+        $compiler->addExtension('gettextTranslator', new GettextTranslator\DI\Extension);
     };
 
-3. Set up in BasePresenter.php
+#### Set up in BasePresenter.php
 
     class BasePresenter extends Nette\Application\UI\Presenter
     {
@@ -78,7 +78,7 @@ Gettext Translator is tool that enables simple and user friendly translation of 
 
 ### How to translate a string
 
-* In template
+#### In template
 
     {_"Login"}
 
@@ -87,7 +87,7 @@ Gettext Translator is tool that enables simple and user friendly translation of 
     2 pieces <!-- $number = 2; -->
     5 pieces <!-- $number = 5; -->
 
-* In forms
+#### In forms
 
     protected function createComponentMyForm()
     {
@@ -99,7 +99,7 @@ Gettext Translator is tool that enables simple and user friendly translation of 
       return $form;
     }
 
-* In components
+#### In components
 
     public function createTemplate($class = NULL)
     {
@@ -110,7 +110,7 @@ Gettext Translator is tool that enables simple and user friendly translation of 
       return $template;
     }
 
-* In flash message
+#### In flash message
 
 
     <div n:foreach="$flashes as $flash" class="alert {$flash->type} fade in">
