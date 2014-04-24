@@ -26,12 +26,8 @@ Gettext Translator is tool that enables simple and user friendly translation of 
         layout: horizontal # or: vertical
         height: 450
 
-
-#### Set up in bootstrap.php
-
-    $configurator->onCompile[] = function ($configurator, $compiler) {
-        $compiler->addExtension('gettextTranslator', new GettextTranslator\DI\Extension);
-    };
+    extensions:
+      gettextTranslator: GettextTranslator\DI\Extension
 
 #### Set up in BasePresenter.php
 
