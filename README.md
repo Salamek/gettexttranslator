@@ -57,18 +57,21 @@ Gettext Translator is tool that enables simple and user friendly translation of 
       {
         $template = parent::createTemplate($class);
 
-         // if not set, the default language will be used
-         if (!isset($this->lang)) {
-           $this->lang = $this->translator->getLang();
-         } else {
+        // if not set, the default language will be used
+        if (!isset($this->lang)) 
+        {
+          $this->lang = $this->translator->getLang();
+        } 
+        else 
+        {
            $this->translator->setLang($this->lang);
-         }
+        }
 
-         $template->setTranslator($this->translator);
+        $template->setTranslator($this->translator);
 
-         return $template;
-         }
-       }
+        return $template;
+      }
+       
 
 ### Change language eg. in @template.latte
 
