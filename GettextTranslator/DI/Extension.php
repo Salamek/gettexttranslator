@@ -35,7 +35,7 @@ class Extension extends Nette\DI\CompilerExtension
     {
       throw new InvalidConfigException('Language file(s) must be defined.');
     }
-    foreach ($config['files'] AS $id => $file)
+    foreach ($config['files'] as $id => $file)
     {
       $translator->addSetup('addFile', array($file, $id));
     }

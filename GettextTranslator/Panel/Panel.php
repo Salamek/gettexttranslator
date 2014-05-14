@@ -80,9 +80,12 @@ class Panel extends Nette\Object implements Nette\Diagnostics\IBarPanel
    */
   public function getPanel()
   {
+    $files = array_keys($this->translator->getFiles());
+    $activeFile = $this->getActiveFile($files);
+
     $strings = $this->translator->getStrings();
     $untranslatedStack = isset($this->sessionStorage['stack']) ? $this->sessionStorage['stack'] : array();
-    foreach ($strings AS $string => $data)
+    foreach ($strings as $string => $data)
     {
       if (!$data)
       {
@@ -91,13 +94,15 @@ class Panel extends Nette\Object implements Nette\Diagnostics\IBarPanel
     }
     $this->sessionStorage['stack'] = $untranslatedStack;
 
-    foreach ($untranslatedStack AS $string => $value)
+    foreach ($untranslatedStack as $string => $value)
     {
       if (!isset($strings[$string]))
       {
         $strings[$string] = FALSE;
       }
     }
+
+    $translator = $this->translator;
 
     ob_start();
     require __DIR__ . '/panel.latte';
@@ -124,7 +129,7 @@ class Panel extends Nette\Object implements Nette\Diagnostics\IBarPanel
         $file = $data->{$this->fileKey};
         unset($data->{$this->languageKey}, $data->{$this->fileKey});
 
-        foreach ($data AS $string => $value)
+        foreach ($data as $string => $value)
         {
           $this->translator->setTranslation($string, $value, $file);
           if ($this->sessionStorage && isset($stack[$string]))
@@ -181,4 +186,24 @@ class Panel extends Nette\Object implements Nette\Diagnostics\IBarPanel
   {
     Nette\Diagnostics\Debugger::getBar()->addPanel(new static($application, $translator, $session, $httpRequest, $layout, $height));
   }
+
+  /**
+   * Get active file name
+   * @param array
+   * @return string
+   */
+  private function getActiveFile($files)
+  {
+    $tmp = explode(':', $this->application->presenter->name);
+
+    if (count($tmp) >= 2 && $module = strtolower($tmp[0]))
+    {
+      return $module;
+    }
+    else
+    {
+      return $files[0];
+    }
+  }
+
 }
