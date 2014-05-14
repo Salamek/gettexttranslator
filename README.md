@@ -132,9 +132,14 @@ public function createTemplate($class = NULL)
 </div>
 ```
 
-## Authors in alphabetic order
+## Authors
+
+### Actively developing
 
 - Adam Schubert
+
+### Previously developed by
+
 - Josef Kufner (jk@frozen-doe.net)
 - Miroslav Paulík (https://github.com/castamir)
 - Roman Sklenář (http://romansklenar.cz)
