@@ -112,7 +112,7 @@ Gettext Translator is tool that enables simple and user friendly translation of 
 #### In flash message
 
 
-    <div n:foreach="$flashes as $flash" class="alert {$flash->type} fade in">
+    <div n:foreach="$flashes AS $flash" class="alert {$flash->type} fade in">
       <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
       {!_$flash->message}
     </div>

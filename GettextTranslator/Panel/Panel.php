@@ -85,7 +85,7 @@ class Panel extends Nette\Object implements Nette\Diagnostics\IBarPanel
 
     $strings = $this->translator->getStrings();
     $untranslatedStack = isset($this->sessionStorage['stack']) ? $this->sessionStorage['stack'] : array();
-    foreach ($strings as $string => $data)
+    foreach ($strings AS $string => $data)
     {
       if (!$data)
       {
@@ -94,7 +94,7 @@ class Panel extends Nette\Object implements Nette\Diagnostics\IBarPanel
     }
     $this->sessionStorage['stack'] = $untranslatedStack;
 
-    foreach ($untranslatedStack as $string => $value)
+    foreach ($untranslatedStack AS $string => $value)
     {
       if (!isset($strings[$string]))
       {
@@ -129,7 +129,7 @@ class Panel extends Nette\Object implements Nette\Diagnostics\IBarPanel
         $file = $data->{$this->fileKey};
         unset($data->{$this->languageKey}, $data->{$this->fileKey});
 
-        foreach ($data as $string => $value)
+        foreach ($data AS $string => $value)
         {
           $this->translator->setTranslation($string, $value, $file);
           if ($this->sessionStorage && isset($stack[$string]))

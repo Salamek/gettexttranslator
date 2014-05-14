@@ -474,7 +474,7 @@
     <div id="TranslationPanel-sidebar">
       <div id="TranslationPanel-fileSelect">
         <select id="TranslationPanel-fileSelectBox">
-          <?php foreach($files as $identifier) { ?>
+          <?php foreach($files AS $identifier) { ?>
           <option value="<?php echo $identifier ?>" <?php if($identifier === $activeFile): ?>selected="selected"<?php endif; ?>><?php echo $identifier ?></option>
           <?php } ?>
         </select>
