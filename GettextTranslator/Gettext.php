@@ -161,7 +161,7 @@ class Gettext extends Nette\Object implements Nette\Localization\ITranslator
       else
       {
         $files = array();
-        foreach ($this->files as $identifier => $dir)
+        foreach ($this->files AS $identifier => $dir)
         {
           $path = "$dir/$this->lang.$identifier.mo";
           if (file_exists($path))
@@ -278,7 +278,7 @@ class Gettext extends Nette\Object implements Nette\Localization\ITranslator
     $input = trim($input);
 
     $input = preg_split('/[\n,]+/', $input);
-    foreach ($input as $metadata)
+    foreach ($input AS $metadata)
     {
       $pattern = ': ';
       $tmp = preg_split("($pattern)", $metadata);
@@ -401,7 +401,7 @@ class Gettext extends Nette\Object implements Nette\Localization\ITranslator
 
     if (isset($this->sessionStorage->newStrings[$this->lang]))
     {
-      foreach (array_keys($this->sessionStorage->newStrings[$this->lang]) as $original)
+      foreach (array_keys($this->sessionStorage->newStrings[$this->lang]) AS $original)
       {
         if (trim($original) != '')
         {
@@ -410,7 +410,7 @@ class Gettext extends Nette\Object implements Nette\Localization\ITranslator
       }
     }
 
-    foreach ($this->dictionary as $original => $data)
+    foreach ($this->dictionary AS $original => $data)
     {
       if (trim($original) != '')
       {
@@ -431,7 +431,7 @@ class Gettext extends Nette\Object implements Nette\Localization\ITranslator
     }
     else
     {
-      foreach ($this->getFiles() as $identifier => $path)
+      foreach ($this->getFiles() AS $identifier => $path)
       {
         if (!isset($result[$identifier]))
         {
@@ -519,7 +519,7 @@ class Gettext extends Nette\Object implements Nette\Localization\ITranslator
     $result = array();
     $result[] = 'PO-Revision-Date: ' . date('Y-m-d H:iO');
 
-    foreach ($this->metadataList as $key => $default)
+    foreach ($this->metadataList AS $key => $default)
     {
       if (isset($this->metadata[$identifier][$key]))
       {
@@ -544,7 +544,7 @@ class Gettext extends Nette\Object implements Nette\Localization\ITranslator
     $po = "# Gettext keys exported by GettextTranslator and Translation Panel\n" . "# Created: " . date('Y-m-d H:i:s') . "\n" . 'msgid ""' . "\n" . 'msgstr ""' . "\n";
     $po .= '"' . implode('\n"' . "\n" . '"', $this->generateMetadata($identifier)) . '\n"' . "\n\n\n";
 
-    foreach ($this->dictionary as $message => $data)
+    foreach ($this->dictionary AS $message => $data)
     {
       if ($data['file'] !== $identifier)
       {
@@ -569,7 +569,7 @@ class Gettext extends Nette\Object implements Nette\Localization\ITranslator
       else
       {
         $i = 0;
-        foreach ($data['translation'] as $string)
+        foreach ($data['translation'] AS $string)
         {
           $po .= 'msgstr[' . $i . '] "' . str_replace(array('"'), array('\"'), $string) . '"' . "\n";
           $i++;
@@ -581,7 +581,7 @@ class Gettext extends Nette\Object implements Nette\Localization\ITranslator
 
     if (isset($this->sessionStorage->newStrings[$this->lang]))
     {
-      foreach ($this->sessionStorage->newStrings[$this->lang] as $original)
+      foreach ($this->sessionStorage->newStrings[$this->lang] AS $original)
       {
         if (trim(current($original)) != "" && !\array_key_exists(current($original), $this->dictionary))
         {
@@ -623,7 +623,7 @@ class Gettext extends Nette\Object implements Nette\Localization\ITranslator
     $idsOffsets = array(0, 28 + $items * 16);
     $stringsOffsets = array(array(0, strlen($metadata)));
 
-    foreach ($dictionary as $key => $value)
+    foreach ($dictionary AS $key => $value)
     {
       $id = $key;
       if (is_array($value['original']) && count($value['original']) > 1)
@@ -640,7 +640,7 @@ class Gettext extends Nette\Object implements Nette\Localization\ITranslator
     }
 
     $valuesOffsets = array();
-    foreach ($stringsOffsets as $offset)
+    foreach ($stringsOffsets AS $offset)
     {
       list ($all, $one) = $offset;
       $valuesOffsets[] = $one;
@@ -649,7 +649,7 @@ class Gettext extends Nette\Object implements Nette\Localization\ITranslator
     $offsets = array_merge($idsOffsets, $valuesOffsets);
 
     $mo = pack('Iiiiiii', 0x950412de, 0, $items, 28, 28 + $items * 8, 0, 28 + $items * 16);
-    foreach ($offsets as $offset)
+    foreach ($offsets AS $offset)
     {
       $mo .= pack('i', $offset);
     }
