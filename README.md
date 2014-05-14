@@ -2,6 +2,8 @@
 
 Gettext Translator is tool that enables simple and user friendly translation of your texts via panel in debug bar. No need to edit or operate with .po/.mo files.
 
+Tested with nette 2.*, please report any bugs into Issues
+
 ## Installation and usage
 
 ### Installation via composer:
