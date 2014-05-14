@@ -69,9 +69,10 @@ class Panel extends Nette\Object implements Nette\Diagnostics\IBarPanel
    */
   public function getTab()
   {
-    ob_start();
-    require __DIR__ . '/tab.latte';
-    return ob_get_clean();
+    $template = new Nette\Templating\FileTemplate(__DIR__ . '/tab.latte');
+    $template->registerFilter(new \Nette\Latte\Engine);
+    $template->registerHelperLoader('Nette\Templating\Helpers::loader');
+    return $template;
   }
 
   /**
@@ -81,7 +82,6 @@ class Panel extends Nette\Object implements Nette\Diagnostics\IBarPanel
   public function getPanel()
   {
     $files = array_keys($this->translator->getFiles());
-    $activeFile = $this->getActiveFile($files);
 
     $strings = $this->translator->getStrings();
     $untranslatedStack = isset($this->sessionStorage['stack']) ? $this->sessionStorage['stack'] : array();
@@ -102,11 +102,37 @@ class Panel extends Nette\Object implements Nette\Diagnostics\IBarPanel
       }
     }
 
-    $translator = $this->translator;
-
-    ob_start();
-    require __DIR__ . '/panel.latte';
-    return ob_get_clean();
+    $template = new Nette\Templating\FileTemplate(__DIR__ . '/panel.latte');
+    $template->registerFilter(new \Nette\Latte\Engine);
+    $template->registerHelperLoader('Nette\Templating\Helpers::loader');
+    $template->translator = $this->translator;
+    $template->ordinalSuffix = function ($count)
+    {
+      switch (substr($count, -1))
+      {
+        case '1':
+          return 'st';
+          break;
+        case '2':
+          return 'nd';
+          break;
+        case '3':
+          return 'rd';
+          break;
+        default:
+          return 'th';
+          break;
+      }
+    };
+    
+    $template->application = $this->application;
+    $template->strings = $strings;
+    $template->height = $this->height;
+    $template->layout = $this->layout;
+    $template->files = $files;
+    $template->xhrHeader = $this->xhrHeader;
+    $template->activeFile = $this->getActiveFile($files);
+    return $template;
   }
 
   /**
@@ -146,30 +172,6 @@ class Panel extends Nette\Object implements Nette\Diagnostics\IBarPanel
       }
 
       exit;
-    }
-  }
-
-  /**
-   * Return an ordinal number suffix
-   * @param string $count
-   * @return string
-   */
-  protected function ordinalSuffix($count)
-  {
-    switch (substr($count, -1))
-    {
-      case '1':
-        return 'st';
-        break;
-      case '2':
-        return 'nd';
-        break;
-      case '3':
-        return 'rd';
-        break;
-      default:
-        return 'th';
-        break;
     }
   }
 

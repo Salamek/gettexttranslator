@@ -5,12 +5,12 @@
 
   #TranslationPanel .nette-inner {
     max-width: 800px !important;
-    height: <?php echo $this->height . 'px'; ?>;
+    height: {$height}px;
     padding: 1px;
   }
 
   #TranslationPanel-sidebar {
-    width: <?php if ($this->layout == 'vertical') echo '40%'; else echo '30%'; ?>;
+    width: {if $layout == 'vertical'} '40%'; {else} '30%'{/if};
     height: 100%;
     overflow: hidden;
     float: left;
@@ -18,7 +18,7 @@
   }
 
   #TranslationPanel-strings {
-    height: <?php echo ($this->height - 60) . 'px'; ?>;
+    height: {$height - 60}px;
     overflow: auto;
     border: 1px solid #AAA;
   }
@@ -80,19 +80,19 @@
   }
 
   #TranslationPanel-editor {
-    width: <?php if ($this->layout == 'vertical') echo '58%'; else echo '68%'; ?>;
+    width: {if $layout == 'vertical'} '58%'; {else} '68%'{/if};
     height: 100%;
     margin: -1px -1px -1px 0;
     float: right;
     position: relative;
   }
 
-  <?php if ($this->layout == 'horizontal') { ?>
-                                             #TranslationPanel div.TranslationPanel-stringVariant {
-                                               width: 50%;
-                                               float: left;
-                                             }
-                                             <?php } ?>
+  {if $layout == 'vertical'}
+    #TranslationPanel div.TranslationPanel-stringVariant {
+      width: 50%;
+      float: left;
+    }
+  {/if}
 
   #TranslationPanel div.TranslationPanel-stringVariant sup {
     font-size: 60%;
@@ -169,302 +169,329 @@
 <script type="text/javascript">
   /* <![CDATA[ */
   var JSON = JSON || {};
-          JSON.stringify = JSON.stringify || function (obj) {
-          var t = typeof (obj);
-                  if (t != "object" || obj === null) {
-          // simple data type
-          if (t == "string") obj = '"' + obj + '"';
-                  return String(obj);
-          } else {
-          var n, v, json = [], arr = (obj && obj.constructor == Array);
-                  for (n in obj) {
-          v = obj[n]; t = typeof (v);
-                  if (t == "string") v = '"' + v.replace(/\"/g, '\\"') + '"';
-                  else if (t == "object" && v !== null) v = JSON.stringify(v);
-                  json.push((arr ? "" : '"' + n.replace(/\"/g, '\\"') + '":') + String(v));
-          }
+  JSON.stringify = JSON.stringify || function(obj) {
+    var t = typeof (obj);
+    if (t != "object" || obj === null) {
+      // simple data type
+      if (t == "string")
+        obj = '"' + obj + '"';
+      return String(obj);
+    } else {
+      var n, v, json = [], arr = (obj && obj.constructor == Array);
+      for (n in obj) {
+        v = obj[n];
+        t = typeof (v);
+        if (t == "string")
+          v = '"' + v.replace(/\"/g, '\\"') + '"';
+        else if (t == "object" && v !== null)
+          v = JSON.stringify(v);
+        json.push((arr ? "" : '"' + n.replace(/\"/g, '\\"') + '":') + String(v));
+      }
 
-          return (arr ? "[" : "{") + String(json) + (arr ? "]" : "}");
-          }
-          };
-          /* ]]> */
+      return (arr ? "[" : "{") + String(json) + (arr ? "]" : "}");
+    }
+  };
+  /* ]]> */
 </script>
 
+
 <script type="text/javascript">
-                  /* <![CDATA[ */
+  /* <![CDATA[ */
 
-                          function in_array (needle, haystack, argStrict) {
-                          var key = '', strict = !!argStrict;
-                                  if (strict) {
-                          for (key in haystack) {
-                          if (haystack[key] === needle) {
-                          return true;
-                          }
-                          }
-                          } else {
-                          for (key in haystack) {
-                          if (haystack[key] == needle) {
-                          return true;
-                          }
-                          }
-                          }
+  function in_array(needle, haystack, argStrict) {
+    var key = '', strict = !!argStrict;
+    if (strict) {
+      for (key in haystack) {
+        if (haystack[key] === needle) {
+          return true;
+        }
+      }
+    } else {
+      for (key in haystack) {
+        if (haystack[key] == needle) {
+          return true;
+        }
+      }
+    }
 
-                          return false;
-                          }
+    return false;
+  }
 
-                  function clone(obj){
-                  if (obj == null || typeof (obj) != 'object')
-                          return obj;
-                          var temp = obj.constructor(); // changed
+  function clone(obj) {
+    if (obj == null || typeof (obj) != 'object')
+      return obj;
+    var temp = obj.constructor(); // changed
 
-                          for (var key in obj)
-                          temp[key] = clone(obj[key]);
-                          return temp;
-                  }
+    for (var key in obj)
+      temp[key] = clone(obj[key]);
+    return temp;
+  }
 
 
-                  var translationPanel = {
-                  strings: < ?php echo json_encode($strings); ? > ,
-                          files: < ?php echo json_encode($files); ? > ,
-                          variants: < ?php echo json_encode($translator - > getVariantsCount()); ? > ,
-                          updatedStrings: [],
-                          currentString: false,
-                          currentFile: false,
-                          filter: '',
-                          listElements: [],
-                          icon: null,
-                          iconNormal: '',
-                          iconNotification: "data:image\/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8\/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAoNJREFUeNqUU01IVFEU\/u59d340\/Knoh8JNhK6qMaMoAoX2EdUmaNMihjZFrQwUIle1iCCibURuakpqk5hSmSWEjkmM\/VApjqjhOPp804zOe+\/ezr1vRmxR0WHO3HfenPOd73z3DEtcPfREcnU0kvE7Nwzm+iX8uJT+XiUloADGGJgQKzwcusm51Yq1pn97eOWgajjQCLu1F5v3x1C7azdqYk2I7GwAQmGgkMfP0SSGOtoRXr+Rec5SI5SsVwpneSh0RChqI6WC57mov3Yby71dUN\/H4I2+haiuQnFmBuvOXIK\/UoRfyKtKArYqKrDj3EW8j5+G0Ew0iP52UyPIdd5BeNt28C1bobwC\/Nk0\/MlxSGqw724CorISzC3C4qB3XgBAw9CHw7cXiHaIZibqlii5Bbm0CEk50eE+qM+jyH39gmi8zWjAy\/U6kAtZwrGCeFUoDqWBhTDFKhwByBWBgvMSgDYKpD1vTkZFXJ\/EkxsGBKCBjXNzSg26ysA00p2yxNqCCFnwii6cuWyQlHOozjLPwbjE1s4adiKYgJmE6b5u5HgUzniKNFUlaIWq6AdwAtY7Ac4MKxArzTAAKHgkHMeY4z8dcTLdHZ8m35WZvW7eM5T3JGlrGR0YibxM8WzPM2Rc+ViYbQsLTB2rwqnLgxeoZn6gOeaUhXwxt3i+ZVPtDUoTr7qeEzGFrCt7Xmbt+7e+TfcH10iLxF2FB9cPT9Q9WoLZYh6M256auEdPb\/D73ZAA+DHQEssHI2gWPnlRIX2iBnUJG0ow45RkU0oSfzDOSjegBeLUmRclpo5XI32ymkCV+UP9zYQu\/phMBgprMAKBp\/QN\/bO4vINNa+Jh\/Kf9EmAAjwQEmDZvGoIAAAAASUVORK5CYII=",
-                          originalValue: null,
-                          init: function() {
-                          this.icon = document.getElementById('TranslationPanel-icon');
-                                  this.iconNormal = document.getElementById('TranslationPanel-icon').src;
-                                  this.currentFile = '<?php echo $activeFile ?>';
-                                  this.drawList('<?php echo $activeFile ?>');
-                                  for (var i = 0; i < this.variants; i++) {
-                          var textarea = document.getElementById('TranslationPanel-stringVariant_' + i);
-                                  textarea.onfocus = function () {
-                                  translationPanel.originalValue = this.value;
-                                  }
-                          textarea.onkeyup = textarea.onchange = function () {
-                          if (translationPanel.originalValue != this.value) {
-                          translationPanel.save();
-                          }
-                          };
-                          }
+  var translationPanel = {
+    strings: {json_encode($strings)|noescape},
+    files: {json_encode($files)|noescape},
+    variants: {json_encode($translator->getVariantsCount())|noescape},
+    updatedStrings: [],
+    currentString: false,
+    currentFile: false,
+    filter: '',
+    listElements: [],
+    icon: null,
+    iconNormal: '',
+    iconNotification: "data:image\/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8\/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAoNJREFUeNqUU01IVFEU\/u59d340\/Knoh8JNhK6qMaMoAoX2EdUmaNMihjZFrQwUIle1iCCibURuakpqk5hSmSWEjkmM\/VApjqjhOPp804zOe+\/ezr1vRmxR0WHO3HfenPOd73z3DEtcPfREcnU0kvE7Nwzm+iX8uJT+XiUloADGGJgQKzwcusm51Yq1pn97eOWgajjQCLu1F5v3x1C7azdqYk2I7GwAQmGgkMfP0SSGOtoRXr+Rec5SI5SsVwpneSh0RChqI6WC57mov3Yby71dUN\/H4I2+haiuQnFmBuvOXIK\/UoRfyKtKArYqKrDj3EW8j5+G0Ew0iP52UyPIdd5BeNt28C1bobwC\/Nk0\/MlxSGqw724CorISzC3C4qB3XgBAw9CHw7cXiHaIZibqlii5Bbm0CEk50eE+qM+jyH39gmi8zWjAy\/U6kAtZwrGCeFUoDqWBhTDFKhwByBWBgvMSgDYKpD1vTkZFXJ\/EkxsGBKCBjXNzSg26ysA00p2yxNqCCFnwii6cuWyQlHOozjLPwbjE1s4adiKYgJmE6b5u5HgUzniKNFUlaIWq6AdwAtY7Ac4MKxArzTAAKHgkHMeY4z8dcTLdHZ8m35WZvW7eM5T3JGlrGR0YibxM8WzPM2Rc+ViYbQsLTB2rwqnLgxeoZn6gOeaUhXwxt3i+ZVPtDUoTr7qeEzGFrCt7Xmbt+7e+TfcH10iLxF2FB9cPT9Q9WoLZYh6M256auEdPb\/D73ZAA+DHQEssHI2gWPnlRIX2iBnUJG0ow45RkU0oSfzDOSjegBeLUmRclpo5XI32ymkCV+UP9zYQu\/phMBgprMAKBp\/QN\/bO4vINNa+Jh\/Kf9EmAAjwQEmDZvGoIAAAAASUVORK5CYII=",
+    originalValue: null,
+    init: function() {
+      this.icon = document.getElementById('TranslationPanel-icon');
+      this.iconNormal = document.getElementById('TranslationPanel-icon').src;
+      this.currentFile = {$activeFile};
+      this.drawList({$activeFile});
+      for (var i = 0; i < this.variants; i++) {
+        var textarea = document.getElementById('TranslationPanel-stringVariant_' + i);
+        textarea.onfocus = function() {
+          translationPanel.originalValue = this.value;
+        };
+        textarea.onkeyup = textarea.onchange = function() {
+          if (translationPanel.originalValue != this.value) {
+            translationPanel.save();
+          }
+        };
+      }
 
-                          var selectBox = document.getElementById('TranslationPanel-fileSelectBox');
-                                  selectBox.onchange = function() {
-                                  translationPanel.changeFile(this.options[this.selectedIndex].value);
-                                  };
-                                  var button = document.getElementById('TranslationPanel-save');
-                                  button.disabled = true;
-                                  button.className += ' disabled';
-                                  button.onclick = function () {
-                                  button.disabled = true;
-                                          button.className += ' disabled';
-                                          translationPanel.commit();
-                                  };
-                                  var filterBox = document.getElementById('TranslationPanel-filterBox');
-                                  var filterReset = document.getElementById('TranslationPanel-filterReset');
-                                  filterReset.style.visibility = 'hidden';
-                                  var onChange = function () {
-                                  translationPanel.filter = filterBox.value;
-                                          filterReset.style.visibility = (translationPanel.filter ? 'visible' : 'hidden');
-                                          translationPanel.drawList(translationPanel.currentFile);
-                                  };
-                                  filterBox.onkeyup = filterBox.onchange = onChange;
-                                  filterReset.onclick = function () {
-                                  translationPanel.filter = filterBox.value = '';
-                                          filterReset.style.visibility = 'hidden';
-                                          translationPanel.drawList(translationPanel.currentFile);
-                                  };
-                                  translationPanel.setStatus();
-                          },
-                          changeFile: function(file) {
-                          if (in_array(file, this.files)) {
-                          this.currentFile = file;
-                                  this.drawList(file);
-                          }
-                          },
-                          drawList: function (file) {
-                          var list = document.getElementById('TranslationPanel-strings');
-                                  list.innerHTML = '';
-                                  this.listElements = [];
-                                  var strings = [{}, {}];
-                                  var untranslated = 0;
-                                  var currentStrings = clone(this.strings['newStrings']);
-                                  for (attrname in this.strings[file]) {
-                          currentStrings[attrname] = this.strings[file][attrname];
-                          }
+      var selectBox = document.getElementById('TranslationPanel-fileSelectBox');
+      selectBox.onchange = function() {
+        translationPanel.changeFile(this.options[this.selectedIndex].value);
+      };
+      var button = document.getElementById('TranslationPanel-save');
+      button.disabled = true;
+      button.className += ' disabled';
+      button.onclick = function() {
+        button.disabled = true;
+        button.className += ' disabled';
+        translationPanel.commit();
+      };
+      var filterBox = document.getElementById('TranslationPanel-filterBox');
+      var filterReset = document.getElementById('TranslationPanel-filterReset');
+      filterReset.style.visibility = 'hidden';
+      var onChange = function() {
+        translationPanel.filter = filterBox.value;
+        filterReset.style.visibility = (translationPanel.filter ? 'visible' : 'hidden');
+        translationPanel.drawList(translationPanel.currentFile);
+      };
+      filterBox.onkeyup = filterBox.onchange = onChange;
+      filterReset.onclick = function() {
+        translationPanel.filter = filterBox.value = '';
+        filterReset.style.visibility = 'hidden';
+        translationPanel.drawList(translationPanel.currentFile);
+      };
+      translationPanel.setStatus();
+    },
+    changeFile: function(file) {
+      if (in_array(file, this.files)) {
+        this.currentFile = file;
+        this.drawList(file);
+      }
+    },
+    drawList: function(file) {
+      var list = document.getElementById('TranslationPanel-strings');
+      list.innerHTML = '';
+      this.listElements = [];
+      var strings = [{}, {}];
+      var untranslated = 0;
+      var currentStrings = clone(this.strings['newStrings']);
+      for (attrname in this.strings[file]) {
+        currentStrings[attrname] = this.strings[file][attrname];
+      }
 
-                          for (var i in currentStrings) {
-                          var translated = Boolean(currentStrings[i]);
-                                  if (translated && (typeof (currentStrings[i]) == 'object' && currentStrings[i] instanceof Array) && currentStrings[i].length > 1) {
-                          for (var plural = 0; plural < this.variants; plural++) {
-                          if (!currentStrings[i][plural]) {
-                          translated = false;
-                                  break;
-                          }
-                          }
-                          }
+      for (var i in currentStrings) {
+        var translated = Boolean(currentStrings[i]);
+        if (translated && (typeof (currentStrings[i]) == 'object' && currentStrings[i] instanceof Array) && currentStrings[i].length > 1) {
+          for (var plural = 0; plural < this.variants; plural++) {
+            if (!currentStrings[i][plural]) {
+              translated = false;
+              break;
+            }
+          }
+        }
 
-                          if (translated)
-                                  strings[1][i] = currentStrings[i];
-                                  else {
-                                  strings[0][i] = currentStrings[i];
-                                          untranslated++;
-                                  }
-                          }
+        if (translated)
+          strings[1][i] = currentStrings[i];
+        else {
+          strings[0][i] = currentStrings[i];
+          untranslated++;
+        }
+      }
 
-                          var notification = document.getElementById('TranslationPanel-notification');
-                                  if (notification)
-                                  notification.parentNode.removeChild(notification);
-                                  if (untranslated) {
-                          this.icon.src = this.iconNotification;
-                                  notification = document.createElement('span');
-                                  notification.id = 'TranslationPanel-notification';
-                                  notification.textContent = untranslated;
-                                  this.icon.parentNode.style.position = 'relative';
-                                  this.icon.parentNode.appendChild(notification);
-                          } else
-                                  this.icon.src = this.iconNormal;
-                                  for (var translated in strings) {
-                          for (var i in strings[translated]) {
-                          if (!this.matchesFilter(i, currentStrings[i]))
-                                  continue;
-                                  var div = document.createElement('div');
-                                  div.className = 'TranslationPanel-string';
-                                  var label;
-                                  var stringData = currentStrings[i];
-                                  if (translated == 0) {
-                          div.className += ' untranslated';
-                          }
+      var notification = document.getElementById('TranslationPanel-notification');
+      if (notification)
+        notification.parentNode.removeChild(notification);
+      if (untranslated) {
+        this.icon.src = this.iconNotification;
+        notification = document.createElement('span');
+        notification.id = 'TranslationPanel-notification';
+        notification.textContent = untranslated;
+        this.icon.parentNode.style.position = 'relative';
+        this.icon.parentNode.appendChild(notification);
+      } else
+        this.icon.src = this.iconNormal;
+      for (var translated in strings) {
+        for (var i in strings[translated]) {
+          if (!this.matchesFilter(i, currentStrings[i]))
+            continue;
+          var div = document.createElement('div');
+          div.className = 'TranslationPanel-string';
+          var label;
+          var stringData = currentStrings[i];
+          if (translated == 0) {
+            div.className += ' untranslated';
+          }
 
-                          if (!stringData) {
-                          label = i;
-                          } else {
-                          if (typeof (stringData) != 'object' || !(stringData instanceof Array))
-                                  stringData = [stringData];
-                                  label = stringData[0];
-                          }
+          if (!stringData) {
+            label = i;
+          } else {
+            if (typeof (stringData) != 'object' || !(stringData instanceof Array))
+              stringData = [stringData];
+            label = stringData[0];
+          }
 
-                          var a = document.createElement('a');
-                                  a.title = i;
-                                  a.innerHTML = (label.length <= 30 ? this.escape(label) : this.escape(label).substr(0, 30) + '&hellip;');
-                                  a.onclick = function () {
-                                  translationPanel.edit(this);
-                                  };
-                                  div.appendChild(a);
-                                  list.appendChild(div);
-                                  this.listElements[i] = div;
-                          }
-                          }
-                          },
-                          matchesFilter: function (string, stringData) {
-                          if (!this.filter)
-                                  return true;
-                                  var filter = new RegExp(this.filter, 'i');
-                                  if (string.match(filter))
-                                  return true;
-                                  if (typeof (stringData) != 'object' || !(stringData instanceof Array))
-                                  stringData = [stringData];
-                                  for (var i in stringData) {
-                          if (typeof (stringData[i]) == 'string' && stringData[i].match(filter))
-                                  return true;
-                          }
+          var a = document.createElement('a');
+          a.title = i;
+          a.innerHTML = (label.length <= 30 ? this.escape(label) : this.escape(label).substr(0, 30) + '&hellip;');
+          a.onclick = function() {
+            translationPanel.edit(this);
+          };
+          div.appendChild(a);
+          list.appendChild(div);
+          this.listElements[i] = div;
+        }
+      }
+    },
+    matchesFilter: function(string, stringData) {
+      if (!this.filter)
+        return true;
+      var filter = new RegExp(this.filter, 'i');
+      if (string.match(filter))
+        return true;
+      if (typeof (stringData) != 'object' || !(stringData instanceof Array))
+      {
+        stringData = [stringData];
+      }
+      for (var i in stringData) {
+        if (typeof (stringData[i]) == 'string' && stringData[i].match(filter))
+        {
+          return true;
+        }
+      }
 
-                          return false;
-                          },
-                          edit: function (anchor) {
-                          var string = anchor.title;
-                                  this.fillIn(this.strings[this.currentFile][string]);
-                                  this.currentString = string;
-                                  document.getElementById('TranslationPanel-stringVariant_0').focus();
-                                  this.setStatus(string.length <= 50 ? this.escape(string) : this.escape(string).substr(0, 50) + '&hellip;');
-                          },
-                          fillIn: function (stringData) {
-                          if (typeof (stringData) != 'object' || !(stringData instanceof Array))
-                                  stringData = [stringData];
-                                  for (var i = 0; i < this.variants; i++) {
-                          var textarea = document.getElementById('TranslationPanel-stringVariant_' + i);
-                                  if (stringData[i])
-                                  textarea.value = stringData[i];
-                                  else
-                                  textarea.value = '';
-                          }
-                          },
-                          save: function () {
-                          if (this.currentString) {
-                          var stringData = [];
-                                  for (var i = 0; i < this.variants; i++) {
-                          var textarea = document.getElementById('TranslationPanel-stringVariant_' + i);
-                                  if (textarea.value)
-                                  stringData[i] = textarea.value;
-                          }
+      return false;
+    },
+    edit: function(anchor) {
+      var string = anchor.title;
+      this.fillIn(this.strings[this.currentFile][string]);
+      this.currentString = string;
+      document.getElementById('TranslationPanel-stringVariant_0').focus();
+      this.setStatus(string.length <= 50 ? this.escape(string) : this.escape(string).substr(0, 50) + '&hellip;');
+    },
+    fillIn: function(stringData) {
+      if (typeof (stringData) != 'object' || !(stringData instanceof Array))
+      {
+        stringData = [stringData];
+      }
+      for (var i = 0; i < this.variants; i++) {
+        var textarea = document.getElementById('TranslationPanel-stringVariant_' + i);
+        if (stringData[i])
+        {
+          textarea.value = stringData[i];
+        }
+        else
+        {
+          textarea.value = '';
+        }
+      }
+    },
+    save: function() {
+      if (this.currentString) {
+        var stringData = [];
+        for (var i = 0; i < this.variants; i++) {
+          var textarea = document.getElementById('TranslationPanel-stringVariant_' + i);
+          if (textarea.value)
+          {
+            stringData[i] = textarea.value;
+          }
+        }
 
-                          if (stringData.length == 1)
-                                  stringData = stringData.shift();
-                                  else if (stringData.length == 0)
-                                  stringData = false;
-                                  this.strings[this.currentFile][this.currentString] = stringData;
-                                  if (typeof (this.strings['newStrings'][this.currentString]) != 'undefined') {
-                          delete this.strings['newStrings'][this.currentString];
-                          }
-                          this.updatedStrings.push(this.currentString);
-                                  if (this.listElements[this.currentString].className.search('modified') == - 1)
-                                  this.listElements[this.currentString].className += ' modified';
-                                  document.getElementById('TranslationPanel-save').disabled = false;
-                                  document.getElementById('TranslationPanel-save').className = 'save';
-                          }
-                          },
-                          commit: function () {
-                          var data = {
-                          'X-GettextTranslator-Lang': '<?php echo $translator->lang ?>',
-                                  'X-GettextTranslator-File': this.currentFile
-                          };
-                                  for (var i in this.updatedStrings) {
-                          data[this.updatedStrings[i]] = this.strings[this.currentFile][this.updatedStrings[i]];
-                          }
+        if (stringData.length == 1)
+        {
+          stringData = stringData.shift();
+        }
+        else if (stringData.length == 0)
+        {
+          stringData = false;
+        }
+        this.strings[this.currentFile][this.currentString] = stringData;
+        if (typeof (this.strings['newStrings'][this.currentString]) != 'undefined') {
+          delete this.strings['newStrings'][this.currentString];
+        }
+        this.updatedStrings.push(this.currentString);
+        if (this.listElements[this.currentString].className.search('modified') == -1)
+        {
+          this.listElements[this.currentString].className += ' modified';
+        }
+        document.getElementById('TranslationPanel-save').disabled = false;
+        document.getElementById('TranslationPanel-save').className = 'save';
+      }
+    },
+    commit: function() {
+      var data = {
+        'X-GettextTranslator-Lang': {$translator->lang},
+        'X-GettextTranslator-File': this.currentFile
+      };
+      for (var i in this.updatedStrings) {
+        data[this.updatedStrings[i]] = this.strings[this.currentFile][this.updatedStrings[i]];
+      }
 
-                          var xmlHttp = window.ActiveXObject ? new ActiveXObject('Microsoft.XMLHTTP') : new XMLHttpRequest();
-                                  xmlHttp.onreadystatechange = function() {
-                                  if (xmlHttp.readyState == 4) {
-                                  if (xmlHttp.status == 200) {
-                                  translationPanel.updatedStrings = [];
-                                          translationPanel.currentString = false;
-                                          translationPanel.setStatus('Sucessfuly saved.');
-                                          translationPanel.drawList(translationPanel.currentFile);
-                                  } else {
-                                  translationPanel.setStatus('Unexpected error.');
-                                          var win = window.open('', 'Error');
-                                          win.document.write(xmlHttp.responseText);
-                                          translationPanel.updatedStrings = [];
-                                          translationPanel.currentString = false;
-                                          translationPanel.drawList(translationPanel.currentFile);
-                                  }
-                                  }
-                                  }
-                          xmlHttp.open("POST", < ?php echo json_encode($this - > application - > getPresenter() - > link('this')); ? > , true);
-                                  xmlHttp.setRequestHeader('<?php echo $this->xhrHeader ?>', 'devel');
-                                  xmlHttp.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-                                  xmlHttp.send(JSON.stringify(data));
-                          },
-                          setStatus: function (text) {
-                          if (text)
-                                  document.getElementById('TranslationPanel-status').innerHTML = text;
-                                  else
-                                  document.getElementById('TranslationPanel-status').innerHTML = '';
-                          },
-                          escape: function (string) {
-                          return string
-                                  .replace('&', '&amp;')
-                                  .replace('"', '&quot;')
-                                  .replace('<', '&lt;')
-                                  .replace('>', '&gt;');
-                          },
-                  };
-                          /* ]]> */
+      var xmlHttp = window.ActiveXObject ? new ActiveXObject('Microsoft.XMLHTTP') : new XMLHttpRequest();
+      xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState == 4) {
+          if (xmlHttp.status == 200) {
+            translationPanel.updatedStrings = [];
+            translationPanel.currentString = false;
+            translationPanel.setStatus('Sucessfuly saved.');
+            translationPanel.drawList(translationPanel.currentFile);
+          } else {
+            translationPanel.setStatus('Unexpected error.');
+            var win = window.open('', 'Error');
+            win.document.write(xmlHttp.responseText);
+            translationPanel.updatedStrings = [];
+            translationPanel.currentString = false;
+            translationPanel.drawList(translationPanel.currentFile);
+          }
+        }
+      };
+      xmlHttp.open("POST", {json_encode($application->getPresenter()->link('this'))|noescape}, true);
+      xmlHttp.setRequestHeader({$xhrHeader}, 'devel');
+      xmlHttp.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+      xmlHttp.send(JSON.stringify(data));
+    },
+    setStatus: function(text) {
+      if (text)
+      {
+        document.getElementById('TranslationPanel-status').innerHTML = text;
+      }
+      else
+      {
+        document.getElementById('TranslationPanel-status').innerHTML = '';
+      }
+    },
+    escape: function(string) {
+      return string
+              .replace('&', '&amp;')
+              .replace('"', '&quot;')
+              .replace('<', '&lt;')
+              .replace('>', '&gt;');
+    }
+  };
+  /* ]]> */
 </script>
 
 <div id="TranslationPanel">
@@ -474,9 +501,7 @@
     <div id="TranslationPanel-sidebar">
       <div id="TranslationPanel-fileSelect">
         <select id="TranslationPanel-fileSelectBox">
-          <?php foreach($files AS $identifier) { ?>
-          <option value="<?php echo $identifier ?>" <?php if($identifier === $activeFile): ?>selected="selected"<?php endif; ?>><?php echo $identifier ?></option>
-          <?php } ?>
+          <option n:foreach="$files AS $identifier" value="{$identifier}" {if $identifier === $activeFile} selected="selected"{/if}>{$identifier}</option>
         </select>
       </div>
       <div id="TranslationPanel-filter">
@@ -488,12 +513,10 @@
     </div>
 
     <div id="TranslationPanel-editor">
-      <?php for ($i = 0; $i < $translator->getVariantsCount(); ++$i) { ?>
-      <div class="TranslationPanel-stringVariant">
-        <label for="TranslationPanel-stringVariant_<?php echo $i; ?>"><?php echo $i > 0 ? $i . '<sup>' . $this->ordinalSuffix($i) . '</sup> plural': 'Singular'; ?>:</label>
-        <textarea id="TranslationPanel-stringVariant_<?php echo $i; ?>" rows="4" cols="40"></textarea>
+      <div n:for="$i = 0; $i < $translator->getVariantsCount(); ++$i" class="TranslationPanel-stringVariant">
+        <label for="TranslationPanel-stringVariant_{$i}">{if $i > 0} {$i}<sup>{$ordinalSuffix($i)}</sup> plural {else}Singular{/if}:</label>
+        <textarea id="TranslationPanel-stringVariant_{$i}" rows="4" cols="40"></textarea>
       </div>
-      <?php } ?>
       <div id="TranslationPanel-tools">
         <span id="TranslationPanel-status">Initializing&hellip;</span>
         <input type="button" value="Save" class="save" id="TranslationPanel-save" />
