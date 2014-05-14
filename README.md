@@ -77,7 +77,7 @@ class BasePresenter extends Nette\Application\UI\Presenter
 
 ### Change language eg. in @template.latte
 
-```Latte
+```HTML
 Choose language:
 <a n:href="this, lang => en">English</a>
 <a n:href="this, lang => cs">Česky</a>
@@ -87,7 +87,7 @@ Choose language:
 
 #### In template
 
-```Latte
+```HTML
 {_"Login"}
 
 {_"piece", $number}
@@ -125,7 +125,7 @@ public function createTemplate($class = NULL)
 
 #### In flash message
 
-```Latte
+```HTML
 <div n:foreach="$flashes AS $flash" class="alert {$flash->type} fade in">
   <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
   {!_$flash->message}
