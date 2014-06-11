@@ -657,4 +657,14 @@ class Gettext extends Nette\Object implements Nette\Localization\ITranslator
     file_put_contents($file, $mo . $ids . $strings);
   }
 
+  public function detectLanguage()
+  {
+    $lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+
+    if (!$lang)
+    {
+      $lang = $this->getLang();
+    }
+    return $lang;
+  }
 }
