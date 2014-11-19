@@ -379,13 +379,13 @@ class Gettext extends Nette\Object implements Nette\Localization\ITranslator
   {
     $this->loadDictonary();
     $files = array_keys($this->files);
-
+    $plural_forms = $this->metadata_list['Plural-Forms'];
     if (isset($this->metadata[$files[0]]['Plural-Forms']))
     {
-      return (int) substr($this->metadata[$files[0]]['Plural-Forms'], 9, 1);
+      $plural_forms = $this->metadata[$files[0]]['Plural-Forms'];
     }
 
-    return 1;
+    return (int)substr($plural_forms, 9, 1);
   }
 
   /**
