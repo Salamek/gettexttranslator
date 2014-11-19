@@ -315,8 +315,12 @@ class Gettext extends Nette\Object implements Nette\Localization\ITranslator
 
     if (!empty($message) && isset($this->dictionary[$message]))
     {
-      $tmp = preg_replace('/([a-z]+)/', '$$1', "n=$form;" . $this->metadata[$files[0]]['Plural-Forms']);
-      eval($tmp);
+      $pluralForms = $this->metadataList['Plural-Forms'];
+			if (isset($this->metadata[$files[0]]['Plural-Forms'])) {
+				$pluralForms = $this->metadata[$files[0]]['Plural-Forms'];
+			}
+			$tmp = preg_replace('/([a-z]+)/', '$$1', "n=$form;" . $pluralForms);
+			eval($tmp);
 
       $message = $this->dictionary[$message]['translation'];
       if (!empty($message))
@@ -379,13 +383,13 @@ class Gettext extends Nette\Object implements Nette\Localization\ITranslator
   {
     $this->loadDictonary();
     $files = array_keys($this->files);
-    $plural_forms = $this->metadata_list['Plural-Forms'];
+    $pluralForms = $this->metadataList['Plural-Forms'];
     if (isset($this->metadata[$files[0]]['Plural-Forms']))
     {
-      $plural_forms = $this->metadata[$files[0]]['Plural-Forms'];
+      $pluralForms = $this->metadata[$files[0]]['Plural-Forms'];
     }
 
-    return (int)substr($plural_forms, 9, 1);
+    return (int)substr($pluralForms, 9, 1);
   }
 
   /**
