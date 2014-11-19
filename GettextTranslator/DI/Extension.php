@@ -2,16 +2,16 @@
 
 namespace GettextTranslator\DI;
 
-use Nette;
+use Nette\DI\CompilerExtension;
+use Nette\DI\ContainerBuilder;
 
 if (!class_exists('Nette\DI\CompilerExtension'))
 {
   class_alias('Nette\Config\CompilerExtension', 'Nette\DI\CompilerExtension');
 }
 
-class Extension extends Nette\DI\CompilerExtension
+class Extension extends CompilerExtension
 {
-
   /** @var array */
   private $defaults = array(
       'lang' => 'en',
@@ -30,11 +30,6 @@ class Extension extends Nette\DI\CompilerExtension
     $translator->addSetup('setLang', array($config['lang']));
     $translator->addSetup('setProductionMode', array($builder->expand('%productionMode%')));
 
-    // at least one language file must be defined
-    if (count($config['files']) === 0)
-    {
-      throw new InvalidConfigException('Language file(s) must be defined.');
-    }
     foreach ($config['files'] AS $id => $file)
     {
       $translator->addSetup('addFile', array($file, $id));
@@ -43,9 +38,4 @@ class Extension extends Nette\DI\CompilerExtension
     $translator->addSetup('GettextTranslator\Panel::register', array('@application', '@self', '@session', '@httpRequest', $config['layout'], $config['height']));
   }
 
-}
-
-class InvalidConfigException extends Nette\InvalidStateException
-{
-  
 }
