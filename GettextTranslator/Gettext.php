@@ -659,7 +659,11 @@ class Gettext extends Nette\Object implements Nette\Localization\ITranslator
 
   public function detectLanguage()
   {
-    $lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+    $lang = null;
+    if(array_key_exists('HTTP_ACCEPT_LANGUAGE', $_SERVER))
+    {
+      $lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+    }
 
     if (!$lang)
     {
