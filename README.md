@@ -43,12 +43,12 @@ class BasePresenter extends Nette\Application\UI\Presenter
   /** @persistent */
   public $lang;
 
-  /** @var GettextTranslator\Gettext */
+  /** @var \GettextTranslator\Gettext */
   protected $translator;
 
 
   /**
-   * @param GettextTranslator\Gettext
+   * @param \GettextTranslator\Gettext
    */
   public function injectTranslator(GettextTranslator\Gettext $translator)
   {
