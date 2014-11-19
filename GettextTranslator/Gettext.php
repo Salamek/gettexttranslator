@@ -551,27 +551,27 @@ class Gettext extends Nette\Object implements Nette\Localization\ITranslator
         continue;
       }
 
-      $po .= 'msgid "' . str_replace(array('"'), array('\"'), $message) . '"' . "\n";
+      $po .= 'msgid "' . addcslashes($message, "\"\n") . '"' . "\n";
 
       if (is_array($data['original']) && count($data['original']) > 1)
       {
-        $po .= 'msgid_plural "' . str_replace(array('"'), array('\"'), end($data['original'])) . '"' . "\n";
+        $po .= 'msgid_plural "' . addcslashes(end($data['original']), "\"\n") . '"' . "\n";
       }
 
       if (!is_array($data['translation']))
       {
-        $po .= 'msgstr "' . str_replace(array('"'), array('\"'), $data['translation']) . '"' . "\n";
+        $po .= 'msgstr "' . addcslashes($data['translation'], "\"\n") . '"' . "\n";
       }
       elseif (count($data['translation']) < 2)
       {
-        $po .= 'msgstr "' . str_replace(array('"'), array('\"'), current($data['translation'])) . '"' . "\n";
+        $po .= 'msgstr "' . addcslashes(current($data['translation']), "\"\n") . '"' . "\n";
       }
       else
       {
         $i = 0;
         foreach ($data['translation'] AS $string)
         {
-          $po .= 'msgstr[' . $i . '] "' . str_replace(array('"'), array('\"'), $string) . '"' . "\n";
+          $po .= 'msgstr[' . $i . '] "' . addcslashes($string, "\"\n") . '"' . "\n";
           $i++;
         }
       }
@@ -583,13 +583,13 @@ class Gettext extends Nette\Object implements Nette\Localization\ITranslator
     {
       foreach ($this->sessionStorage->newStrings[$this->lang] AS $original)
       {
-        if (trim(current($original)) != "" && !\array_key_exists(current($original), $this->dictionary))
+        if (trim(current($original)) != "" && !array_key_exists(current($original), $this->dictionary))
         {
-          $po .= 'msgid "' . str_replace(array('"'), array('\"'), current($original)) . '"' . "\n";
+          $po .= 'msgid "' . addcslashes(current($original), "\"\n") . '"' . "\n";
 
           if (count($original) > 1)
           {
-            $po .= 'msgid_plural "' . str_replace(array('"'), array('\"'), end($original)) . '"' . "\n";
+            $po .= 'msgid_plural "' . addcslashes(current($original), "\"\n") . '"' . "\n";
           }
 
           $po .= "msgstr \"\"\n";
