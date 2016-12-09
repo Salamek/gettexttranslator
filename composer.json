@@ -1,8 +1,8 @@
 {
-  "name": "salamek/gettexttranslator",
+  "name": "repli2dev/gettexttranslator",
   "description": "Translator for Nette (PHP framework).",
   "keywords": ["nette", "translator", "gettext"],
-  "homepage": "https://github.com/Salamek/gettexttranslator",
+  "homepage": "https://github.com/repli2dev/gettexttranslator",
   "license": ["BSD-3-Clause"],
   "authors": [
     {
