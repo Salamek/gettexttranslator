@@ -2,9 +2,12 @@
 
 namespace GettextTranslator;
 
+use Latte\Loaders\FileLoader;
 use Nette;
+use Tracy\Debugger;
+use Tracy\IBarPanel;
 
-class Panel extends Nette\Object implements Nette\Diagnostics\IBarPanel
+class Panel extends Nette\Object implements IBarPanel
 {
 
     /** @var string */
@@ -69,9 +72,11 @@ class Panel extends Nette\Object implements Nette\Diagnostics\IBarPanel
      */
     public function getTab()
     {
-        $template = new Nette\Templating\FileTemplate(__DIR__ . '/tab.latte');
-        $template->registerFilter(new \Nette\Latte\Engine);
-        $template->registerHelperLoader('Nette\Templating\Helpers::loader');
+        $latte = new \Latte\Engine;
+        $latte->setLoader(new FileLoader);
+
+        $template = new \Nette\Bridges\ApplicationLatte\Template($latte);
+        $template->setFile(__DIR__ . '/tab.latte');
         return $template;
     }
 
@@ -98,9 +103,12 @@ class Panel extends Nette\Object implements Nette\Diagnostics\IBarPanel
             }
         }
 
-        $template = new Nette\Templating\FileTemplate(__DIR__ . '/panel.latte');
-        $template->registerFilter(new \Nette\Latte\Engine);
-        $template->registerHelperLoader('Nette\Templating\Helpers::loader');
+        $latte = new \Latte\Engine;
+        $latte->setLoader(new FileLoader);
+
+        $template = new \Nette\Bridges\ApplicationLatte\Template($latte);
+        $template->setFile(__DIR__ . '/panel.latte');
+
         $template->translator = $this->translator;
         $template->ordinalSuffix = function ($count) {
             switch (substr($count, -1)) {
@@ -175,7 +183,7 @@ class Panel extends Nette\Object implements Nette\Diagnostics\IBarPanel
      */
     public static function register(Nette\Application\Application $application, Gettext $translator, Nette\Http\Session $session, Nette\Http\Request $httpRequest, $layout, $height)
     {
-        Nette\Diagnostics\Debugger::getBar()->addPanel(new static($application, $translator, $session, $httpRequest, $layout, $height));
+        Debugger::getBar()->addPanel(new static($application, $translator, $session, $httpRequest, $layout, $height));
     }
 
     /**
@@ -185,7 +193,7 @@ class Panel extends Nette\Object implements Nette\Diagnostics\IBarPanel
      */
     private function getActiveFile($files)
     {
-        $tmp = explode(':', $this->application->presenter->name);
+        $tmp = explode(':', $this->application->getPresenter()->name);
 
         if (count($tmp) >= 2 && $module = strtolower($tmp[0])) {
             return $module;
