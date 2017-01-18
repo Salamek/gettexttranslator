@@ -130,7 +130,7 @@ public function createTemplate($class = NULL)
 ```HTML
 <div n:foreach="$flashes AS $flash" class="alert {$flash->type} fade in">
   <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-  {!_$flash->message}
+  {_$flash->message|noescape}
 </div>
 ```
 
