@@ -1,5 +1,7 @@
 # Gettext Translator
 
+**Forked from https://github.com/Salamek/gettexttranslator due to bug with plural selection**
+
 Gettext Translator is tool that enables simple and user friendly translation of your texts via panel in debug bar. No need to edit or operate with .po/.mo files.
 
 Tested with nette 2.1>, please report any bugs into Issues
@@ -11,7 +13,7 @@ Tested with nette 2.1>, please report any bugs into Issues
 ```json
 {
   "require":{
-    "salamek/gettexttranslator"
+    "repli2dev/gettexttranslator"
   }
 }
 ```
