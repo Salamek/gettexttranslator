@@ -55,10 +55,10 @@ class Gettext extends Nette\Object implements Nette\Localization\ITranslator
       'X-Poedit-KeywordsList' => NULL
   );
 
-  public function __construct(Nette\Http\Session $session, Nette\Caching\IStorage $cacheStorage, Nette\Http\Response $httpResponse)
+  public function __construct(Nette\Http\Session $session, Nette\Caching\IStorage $cacheStorage, Nette\Http\Response $httpResponse, $instanceTag = null)
   {
-    $this->sessionStorage = $sessionStorage = $session->getSection(self::$namespace);
-    $this->cache = new Nette\Caching\Cache($cacheStorage, self::$namespace);
+    $this->sessionStorage = $sessionStorage = $session->getSection(self::$namespace . ($instanceTag ? ('-' . $instanceTag) : ''));
+    $this->cache = new Nette\Caching\Cache($cacheStorage, self::$namespace . ($instanceTag ? ('-' . $instanceTag) : ''));
     $this->httpResponse = $httpResponse;
 
     if (!isset($sessionStorage->newStrings) || !is_array($sessionStorage->newStrings))
