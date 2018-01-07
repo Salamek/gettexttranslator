@@ -152,7 +152,7 @@ class Panel implements IBarPanel
                     $stack = isset($this->sessionStorage['stack']) ? $this->sessionStorage['stack'] : array();
                 }
 
-                $this->translator->lang = $data->{$this->languageKey};
+                $this->translator->setLang($data->{$this->languageKey});
                 $file = $data->{$this->fileKey};
                 unset($data->{$this->languageKey}, $data->{$this->fileKey});
 
