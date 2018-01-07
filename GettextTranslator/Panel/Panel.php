@@ -7,8 +7,9 @@ use Nette;
 use Tracy\Debugger;
 use Tracy\IBarPanel;
 
-class Panel extends Nette\Object implements IBarPanel
+class Panel implements IBarPanel
 {
+    use Nette\SmartObject;
 
     /** @var string */
     private $xhrHeader = 'X-Translation-Client';
