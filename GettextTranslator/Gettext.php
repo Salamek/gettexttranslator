@@ -274,11 +274,11 @@ class Gettext implements Nette\Localization\ITranslator
         $message_plural = NULL;
         if (is_array($form)) {
             $message_plural = current($form);
-            $form = (int)end($form);
+            $count = (int)end($form);
         } elseif (is_numeric($form)) {
-            $form = (int)$form;
+            $count = (int)$form;
         } elseif (!is_int($form) || $form === NULL) {
-            $form = 1;
+            $count = 1;
         }
 
         if (!empty($message) && isset($this->dictionary[$message])) {
@@ -286,7 +286,7 @@ class Gettext implements Nette\Localization\ITranslator
             if (isset($this->metadata[$files[0]]['Plural-Forms'])) {
                 $pluralForms = $this->metadata[$files[0]]['Plural-Forms'];
             }
-            $tmp = preg_replace('/([a-z]+)/', '$$1', "n=$form;" . $pluralForms);
+            $tmp = preg_replace('/([a-z]+)/', '$$1', "n=$count;" . $pluralForms);
             eval($tmp . '$message_plural = (int) $plural;');
 
             $message = $this->dictionary[$message]['translation'];
@@ -301,7 +301,7 @@ class Gettext implements Nette\Localization\ITranslator
                 $this->sessionStorage->newStrings[$this->lang][$message] = empty($message_plural) ? array($message) : array($message, $message_plural);
             }
 
-            if ($form > 1 && !empty($message_plural)) {
+            if ($count > 1 && !empty($message_plural)) {
                 $message = $message_plural;
             }
         }
